@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SketchParty — Multiplayer Drawing &amp; Guessing Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>🎨 SketchParty</h1>
+  <p class="tagline">Draw it. Guess it. Beat the clock.</p>
+</header>
+
+<main>
+  <!-- LOBBY -->
+  <section id="lobby" class="card">
+    <h2>Join a game</h2>
+    <label>Name <input id="nameInput" type="text" maxlength="20" placeholder="Your name"></label>
+    <div class="row">
+      <button id="createBtn">Create room</button>
+      <span>or</span>
+      <input id="codeInput" type="text" maxlength="4" placeholder="Room code" class="code">
+      <button id="joinBtn">Join room</button>
+    </div>
+    <p id="lobbyError" class="error"></p>
+    <div id="roomInfo" class="hidden">
+      <p>Room code: <strong id="roomCode"></strong> <span class="hint">(share it with friends)</span></p>
+      <ul id="lobbyPlayers"></ul>
+      <label>Rounds
+        <select id="roundsSelect">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+        </select>
+      </label>
+      <label>Mode
+        <select id="modeSelect">
+          <option value="casual" selected>Casual game</option>
+          <option value="tournament">🏆 Tournament (elimination bracket)</option>
+        </select>
+      </label>
+      <p class="hint">Tournament: everyone plays a match, the lowest scorers are eliminated each match, and the last player standing is champion. Best with 4+ players.</p>
+      <label>Custom words (optional, comma-separated)
+        <input id="customWords" type="text" placeholder="e.g. ESP32, LoRaWAN, oscilloscope">
+      </label>
+      <p class="hint">Custom words replace the medium-difficulty slot — great for a themed game night.</p>
+      <button id="startBtn">Start game</button>
+      <p class="hint">Need at least 2 players. Everyone draws once per round.</p>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="game" class="hidden">
+    <div id="statusBar">
+      <span id="turnInfo">Waiting…</span>
+      <span id="hint"></span>
+      <span id="gpStatus"></span>
+      <button id="muteBtn" title="Toggle sound">🔊</button>
+      <span id="timer">⏱ 60</span>
+    </div>
+    <div id="bracket" class="hidden card">
+      <h3>🏆 Tournament</h3>
+      <p id="bracketMatch"></p>
+      <p>Still in: <span id="bracketAlive"></span></p>
+      <p>Eliminated: <span id="bracketOut"></span></p>
+    </div>
+    <div id="wordChoices" class="hidden card">
+      <p>Your turn to draw! Pick a word:</p>
+      <div id="choices"></div>
+    </div>
+    <div class="layout">
+      <aside class="card">
+        <h3>Players</h3>
+        <ul id="players"></ul>
+      </aside>
+      <div class="board card">
+        <div id="canvasWrap">
+          <canvas id="canvas" width="640" height="420"></canvas>
+          <div id="gpCursor" class="hidden"></div>
+        </div>
+        <div id="tools" class="hidden">
+          <input type="color" id="colorPicker" value="#222222">
+          <label>Brush <input type="range" id="brushSize" min="2" max="24" value="5"></label>
+          <button id="eraserBtn">Eraser</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+        <p id="gpHelp" class="hidden hint">🎮 PS5 controller connected: left stick moves the cursor, X draws, Square changes color, Triangle clears, L1/R1 change brush size.</p>
+      </div>
+      <aside class="card">
+        <h3>Guesses &amp; chat</h3>
+        <ul id="chat"></ul>
+        <div class="row">
+          <input id="chatInput" type="text" maxlength="200" placeholder="Type a guess…">
+          <button id="sendBtn">Send</button>
+        </div>
+      </aside>
+    </div>
+    <div id="banner" class="hidden card"></div>
+  </section>
+</main>
+
+<footer>
+  <p>Built for Handshake's AI Skills Studio "Create a Multiplayer Game" mission. Open the same link on another device or tab to play together.</p>
+</footer>
+
+<canvas id="fxCanvas"></canvas>
+<script src="client.js"></script>
+</body>
+</html>
